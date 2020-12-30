@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PingStats": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 2 --export test.csv 1.1.1.1"
+    }
+  }
+}
