@@ -8,7 +8,7 @@ namespace Pingalot.Layouts
 {
 	public static class ModernPing
 	{
-		public static async Task<PingSession> StartAsync(PingRequestOptions options)
+		public static async Task<PingStats> StartAsync(PingRequestOptions options)
 		{
 			var pingRequestAgent = new PingRequestAgent();
 			var cancellationTokenSource = new CancellationTokenSource();
@@ -19,7 +19,7 @@ namespace Pingalot.Layouts
 				cancellationTokenSource.Cancel();
 			};
 
-			PingSession results = null;
+			PingStats results = null;
 
 			if (options.NumberOfPings != -1)
 			{
@@ -59,16 +59,16 @@ namespace Pingalot.Layouts
 							}
 
 							var packetsLostColour = "grey54";
-							if (e.Session.PacketsLostPercentage > 5)
+							if (e.PingStatsSession.PacketsLostPercentage > 5)
 							{
 								packetsLostColour = "red";
 							}
-							else if (Math.Round(e.Session.PacketsLostPercentage, 2) > 0)
+							else if (Math.Round(e.PingStatsSession.PacketsLostPercentage, 2) > 0)
 							{
 								packetsLostColour = "maroon";
 							}
 
-							ctx.Status($"Continuously pinging [yellow]{options.Address}[/] [grey54]({e.Session.PacketsSent} sent, [{packetsLostColour}]{e.Session.PacketsLostPercentage:0.00}% lost[/], {e.Session.AverageRoundtrip}ms average, {(int)e.Session.Elapsed.TotalMinutes}:{e.Session.Elapsed.Seconds:00} elapsed)[/]");
+							ctx.Status($"Continuously pinging [yellow]{options.Address}[/] [grey54]({e.PingStatsSession.PacketsSent} sent, [{packetsLostColour}]{e.PingStatsSession.PacketsLostPercentage:0.00}% lost[/], {e.PingStatsSession.AverageRoundtrip}ms average, {(int)e.PingStatsSession.Elapsed.TotalMinutes}:{e.PingStatsSession.Elapsed.Seconds:00} elapsed)[/]");
 						};
 
 						results = await pingRequestAgent.StartAsync(options, cancellationTokenSource.Token);

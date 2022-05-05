@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pingalot
 {
-	public class PingRequestExportModel
+	public class PingRequestExportModel 
 	{
 		public string Address { get; set; }
 		public string Status { get; set; }

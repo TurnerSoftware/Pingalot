@@ -1,8 +1,14 @@
 {
   "profiles": {
-    "PingStats": {
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    },
+    "PingStatsApp": {
       "commandName": "Project",
-      "commandLineArgs": "-t --layout 2 --export test.csv 1.1.1.1"
+      "commandLineArgs": "-t --layout 2 1.1.1.1 --export C:\\blahblah\\stuff",
+      "remoteDebugEnabled": false
     }
   }
 }

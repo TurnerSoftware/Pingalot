@@ -5,6 +5,6 @@
 	public class PingCompletedEventArgs
 	{
 		public PingRequest CompletedPing { get; init; }
-		public PingSession Session { get; init; }
+        public PingStats PingStatsSession { get; init; }
 	}
 }
