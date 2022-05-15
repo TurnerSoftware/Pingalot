@@ -7,7 +7,7 @@ namespace Pingalot.Layouts
 {
 	public static class TraditionalPing
 	{
-		public static async Task<PingSession> StartAsync(PingRequestOptions options)
+		public static async Task<PingStats> StartAsync(PingRequestOptions options)
 		{
 			var cancellationTokenSource = new CancellationTokenSource();
 
