@@ -1,13 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32505.426
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pingalot", "src\Pingalot\Pingalot.csproj", "{6BA0A70A-FC27-43C6-BE8F-0BAE95432E5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pingalot", "src\Pingalot\Pingalot.csproj", "{6BA0A70A-FC27-43C6-BE8F-0BAE95432E5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D0D3A528-9898-4B5C-A14B-3E2717239C24}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pingalot.Core", "src\Pingalot.Core\Pingalot.Core.csproj", "{13DFE13E-59AE-406F-9A11-9327B5847167}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pingalot.Core", "src\Pingalot.Core\Pingalot.Core.csproj", "{13DFE13E-59AE-406F-9A11-9327B5847167}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{405D555B-772E-441F-8919-A5D317DBAE54}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		CodeCoverage.runsettings = CodeCoverage.runsettings
+		License.txt = License.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F7E1DAB2-474F-47CE-83F0-82062D2CE69E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pingalot.Core.Tests", "tests\Pingalot.Core.Tests\Pingalot.Core.Tests.csproj", "{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +39,10 @@ Global
 		{13DFE13E-59AE-406F-9A11-9327B5847167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13DFE13E-59AE-406F-9A11-9327B5847167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13DFE13E-59AE-406F-9A11-9327B5847167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +50,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6BA0A70A-FC27-43C6-BE8F-0BAE95432E5A} = {D0D3A528-9898-4B5C-A14B-3E2717239C24}
 		{13DFE13E-59AE-406F-9A11-9327B5847167} = {D0D3A528-9898-4B5C-A14B-3E2717239C24}
+		{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D} = {F7E1DAB2-474F-47CE-83F0-82062D2CE69E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FFE652E6-2831-407E-8AAC-223595FF8E7F}
