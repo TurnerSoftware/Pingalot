@@ -62,7 +62,14 @@ namespace Pingalot
 				PacketsLost = PacketsSent - PacketsReceived;
 				PacketsLostPercentage = (double)PacketsLost / PacketsSent * 100;
 
-				AverageRoundtrip = totalRoundtrip / PacketsReceived;
+				if (PacketsReceived > 0)
+				{
+					AverageRoundtrip = totalRoundtrip / PacketsReceived;
+				}
+				else
+				{
+					AverageRoundtrip = 0;
+				}
 			}
 		}
 
