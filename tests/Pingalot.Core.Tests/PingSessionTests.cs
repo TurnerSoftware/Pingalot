@@ -36,7 +36,7 @@ namespace Pingalot.Core.Tests
 
 			var testPingSession = new PingSession(startTime, endTime, duration, pingRequests);
 
-			Assert.IsTrue(testPingSession.AverageRoundtrip == 0, "If AverageRoundtrip is 0, we will attempt a divide by zero.");
+			Assert.IsTrue(testPingSession.AverageRoundtrip == 0, "If PacketsReceived is 0, when we attempt to calculate AverageRoundTrip we may trigger a divide by zero exception.");
 		}
 	}
 }
