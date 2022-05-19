@@ -33,7 +33,7 @@ namespace Pingalot
 		private void CalculateStatistics()
 		{
 			PacketsSent = Requests.Count;
-			var totalRoundtrip = 0L;
+			double totalRoundtrip = 0;
 
 			for (var i = 0; i < Requests.Count; i++)
 			{
