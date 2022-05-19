@@ -61,8 +61,10 @@ namespace Pingalot
 			{
 				PacketsLost = PacketsSent - PacketsReceived;
 				PacketsLostPercentage = (double)PacketsLost / PacketsSent * 100;
+				PacketsLostPercentage = Math.Round(PacketsLostPercentage, 2);
 
 				AverageRoundtrip = totalRoundtrip / PacketsReceived;
+				AverageRoundtrip = Math.Round(AverageRoundtrip, 2);
 			}
 		}
 

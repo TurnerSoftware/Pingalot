@@ -70,7 +70,7 @@ namespace Pingalot.Core.Tests
 				pingRequests.Add(pingRequest);
 			}
 
-			// Create 3 successful pings 5ms RT 
+			// Create 2 successful pings 5ms RT 
 			for (int i = 0; i < 3; i++)
 			{
 				var pingRequest = new PingRequest
@@ -107,6 +107,13 @@ namespace Pingalot.Core.Tests
 			var testPingSession = new PingSession(startTime, endTime, duration, pingRequests);
 
 			// assert that stats add up properly - calc them manually and not via debug
+			Assert.IsTrue(testPingSession.PacketsReceived == 9, "PacketsReceived should be 9.");
+			Assert.IsTrue(testPingSession.PacketsSent == 11, "PacketsSent should be 11.");
+			Assert.IsTrue(testPingSession.PacketsLost == 2, "PacketsLost should be 2.");
+			Assert.IsTrue(testPingSession.PacketsLostPercentage == 18.18, "PacketsLostPercentage should be 18.18%");
+			Assert.IsTrue(testPingSession.MinimumRoundtrip == 5, "MinimumRoundtrip should be 5");
+			Assert.IsTrue(testPingSession.MaximumRoundtrip == 10, "MinimumRoundtrip should be 10");
+			Assert.IsTrue(testPingSession.AverageRoundtrip == 8.33, "AverageRoundtrip should equal 75 divided by 9 = 8.33 rounded to two decimal places.");
 		}
 	}
 }
