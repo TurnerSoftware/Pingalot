@@ -23,7 +23,7 @@ namespace Pingalot.Core.Tests
 
 			var pingRequest = new PingRequest
 			{
-				Address = new IPAddress(16843009),
+				Address = IPAddress.Loopback,
 				Status = IPStatus.TimedOut,
 				RoundtripTime = 0,
 				TimeToLive = 0,
