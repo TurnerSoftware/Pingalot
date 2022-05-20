@@ -16,7 +16,7 @@ namespace Pingalot.Core.Tests
 
 			var pingRequests = new List<PingRequest>();
 
-			var startTime = DateTime.Now;
+			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
 			var duration = TimeSpan.FromSeconds(30);
 			var endTime = startTime.Add(duration);
 
