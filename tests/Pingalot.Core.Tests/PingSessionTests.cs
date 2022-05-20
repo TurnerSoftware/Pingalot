@@ -17,7 +17,7 @@ namespace Pingalot.Core.Tests
 			var pingRequests = new List<PingRequest>();
 
 			var startTime = DateTime.Now;
-			TimeSpan duration = new System.TimeSpan(0, 0, 0, 30);
+			var duration = TimeSpan.FromSeconds(30);
 			var endTime = startTime.Add(duration);
 
 
