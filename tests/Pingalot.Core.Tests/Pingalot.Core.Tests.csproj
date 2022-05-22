@@ -13,4 +13,8 @@
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Pingalot.Core\Pingalot.Core.csproj" />
+  </ItemGroup>
+
 </Project>
