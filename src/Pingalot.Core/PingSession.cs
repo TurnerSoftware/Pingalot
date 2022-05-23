@@ -33,7 +33,7 @@ namespace Pingalot
 		private void CalculateStatistics()
 		{
 			PacketsSent = Requests.Count;
-			var totalRoundtrip = 0L;
+			var totalRoundtrip = 0d;
 
 			for (var i = 0; i < Requests.Count; i++)
 			{
@@ -65,6 +65,7 @@ namespace Pingalot
 				if (PacketsReceived > 0)
 				{
 					AverageRoundtrip = totalRoundtrip / PacketsReceived;
+					AverageRoundtrip = Math.Round(AverageRoundtrip, 2);
 				}
 				else
 				{
