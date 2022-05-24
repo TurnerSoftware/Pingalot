@@ -18,7 +18,6 @@ namespace Pingalot
 			{
 				Ttl = options.TimeTolive
 			};
-			var pingRequests = new List<PingRequest>();
 
 			var buffer = CreateBuffer(options.BufferSize);
 
