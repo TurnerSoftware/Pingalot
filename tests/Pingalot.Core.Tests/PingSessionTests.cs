@@ -23,7 +23,7 @@ namespace Pingalot.Core.Tests
 			// Setup a single failed ping(TimedOut)
 			var pingRequest = new PingRequest
 			{
-				Address = new IPAddress(16843009),
+				Address = IPAddress.Loopback,
 				Status = IPStatus.TimedOut,
 				RoundtripTime = 0,
 				TimeToLive = 0,
@@ -37,8 +37,10 @@ namespace Pingalot.Core.Tests
 			var testPingSession = new PingSession(startTime, endTime, duration, pingRequests);
 
 			// When we have a single failed ping request - our AverageRoundtrip should be 0
-			Assert.IsTrue(testPingSession.AverageRoundtrip == 0, "If AverageRoundtrip is 0, we will attempt a divide by zero.");
+			Assert.AreEqual(testPingSession.AverageRoundtrip, 0, "If PacketsReceived is 0, when we attempt to calculate AverageRoundTrip we may trigger a divide by zero exception.");
 		}
+
+
 
 		[TestMethod]
 		public void ConfirmPingSessionStatistics()
