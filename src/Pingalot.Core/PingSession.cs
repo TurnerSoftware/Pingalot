@@ -7,54 +7,56 @@ namespace Pingalot
 	public class PingSession
 	{
 		public DateTime StartTime { get; }
-		public DateTime? EndTime { get; }
-		public TimeSpan Elapsed { get; }
-		public IReadOnlyList<PingRequest> Requests { get; }
+		public DateTime? EndTime { get; private set; }
+		public TimeSpan Elapsed { get; private set; }
 
-		public PingSession(DateTime startTime, TimeSpan elapsed, IReadOnlyList<PingRequest> results)
+		public PingRequest PingResult { get; private set; }
+
+		public int PacketsSent { get; private set; }
+		public int PacketsReceived { get; private set; }
+		public int PacketsLost { get; private set; }
+		public double PacketsLostPercentage { get; private set; }
+		public long MinimumRoundtrip { get; private set; }
+		public long MaximumRoundtrip { get; private set; }
+		public long TotalRoundtrip { get; private set; }
+		public double AverageRoundtrip { get; private set; }
+
+		public PingSession(DateTime startTime)
 		{
 			StartTime = startTime;
-			Elapsed = elapsed;
-			Requests = results;
-
-			CalculateStatistics();
+			PacketsSent = 0;
+			PacketsReceived = 0;
+			PacketsLost = 0;
+			PacketsLostPercentage = 0D;
+			MinimumRoundtrip = 0L;
+			MaximumRoundtrip = 0L;
+			TotalRoundtrip = 0L;
+			AverageRoundtrip = 0D;
 		}
 
-		public PingSession(DateTime startTime, DateTime endTime, TimeSpan elapsed, IReadOnlyList<PingRequest> results)
+		public void AddSinglePingResult(TimeSpan elapsed, PingRequest pingResult)
 		{
-			StartTime = startTime;
-			EndTime = endTime;
 			Elapsed = elapsed;
-			Requests = results;
+			PingResult = pingResult;
 
-			CalculateStatistics();
-		}
+			PacketsSent++;
 
-		private void CalculateStatistics()
-		{
-			PacketsSent = Requests.Count;
-			var totalRoundtrip = 0d;
-
-			for (var i = 0; i < Requests.Count; i++)
+			if (PingResult.Status == IPStatus.Success)
 			{
-				var result = Requests[i];
+				PacketsReceived++;
 
-				if (result.Status == IPStatus.Success)
+				if (PacketsReceived == 1)
 				{
-					PacketsReceived++;
-					if (PacketsReceived == 1)
-					{
-						MinimumRoundtrip = result.RoundtripTime;
-						MaximumRoundtrip = result.RoundtripTime;
-					}
-					else
-					{
-						MinimumRoundtrip = Math.Min(MinimumRoundtrip, result.RoundtripTime);
-						MaximumRoundtrip = Math.Max(MaximumRoundtrip, result.RoundtripTime);
-					}
-
-					totalRoundtrip += result.RoundtripTime;
+					MinimumRoundtrip = PingResult.RoundtripTime;
+					MaximumRoundtrip = PingResult.RoundtripTime;
 				}
+				else
+				{
+					MinimumRoundtrip = Math.Min(MinimumRoundtrip, PingResult.RoundtripTime);
+					MaximumRoundtrip = Math.Max(MaximumRoundtrip, PingResult.RoundtripTime);
+				}
+
+				TotalRoundtrip += PingResult.RoundtripTime;
 			}
 
 			if (PacketsSent > 0)
@@ -66,7 +68,7 @@ namespace Pingalot
 
 				if (PacketsReceived > 0)
 				{
-					AverageRoundtrip = totalRoundtrip / PacketsReceived;
+					AverageRoundtrip = TotalRoundtrip / PacketsReceived;
 					AverageRoundtrip = Math.Round(AverageRoundtrip, 2);
 				}
 				else
@@ -76,12 +78,11 @@ namespace Pingalot
 			}
 		}
 
-		public int PacketsSent { get; private set; }
-		public int PacketsReceived { get; private set; }
-		public int PacketsLost { get; private set; }
-		public double PacketsLostPercentage { get; private set; }
-		public long MinimumRoundtrip { get; private set; }
-		public long MaximumRoundtrip { get; private set; }
-		public double AverageRoundtrip { get; private set; }
+		public void CalculateFinalPingStats(DateTime endTime, TimeSpan elapsed)
+		{
+			EndTime = endTime;
+			Elapsed = elapsed;
+		}
+
 	}
 }
