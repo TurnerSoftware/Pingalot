@@ -23,10 +23,13 @@ namespace Pingalot
 			var buffer = CreateBuffer(options.BufferSize);
 
 			var startTime = DateTime.Now;
+
+			var pingSession = new PingSession(startTime);
+
 			var timer = new Stopwatch();
 			timer.Start();
 
-			while (!cancellationToken.IsCancellationRequested && (options.NumberOfPings == -1 || pingRequests.Count < options.NumberOfPings))
+			while (!cancellationToken.IsCancellationRequested && (options.NumberOfPings == -1 || pingSession.PacketsSent < options.NumberOfPings))
 			{
 				var requestTime = DateTime.Now;
 				var pingReply = await pingSender.SendPingAsync(options.Address, (int)options.PingTimeout.TotalMilliseconds, buffer, pingOptions);
@@ -41,14 +44,13 @@ namespace Pingalot
 					RequestTime = requestTime
 				};
 
-				pingRequests.Add(pingRequest);
-
-				var partialSession = new PingSession(startTime, timer.Elapsed, pingRequests);
 				PingCompleted?.Invoke(this, new PingCompletedEventArgs
 				{
 					CompletedPing = pingRequest,
-					Session = partialSession
+					Session = pingSession
 				});
+
+				pingSession.AddSinglePingResult(timer.Elapsed, pingRequest);
 
 				try
 				{
@@ -60,7 +62,8 @@ namespace Pingalot
 			timer.Stop();
 			var endTime = DateTime.Now;
 
-			return new PingSession(startTime, endTime, timer.Elapsed, pingRequests);
+			pingSession.CalculateFinalPingStats(endTime, timer.Elapsed);
+			return pingSession;
 		}
 
 		private static byte[] CreateBuffer(int size)
