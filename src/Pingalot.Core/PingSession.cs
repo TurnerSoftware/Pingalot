@@ -18,7 +18,7 @@ namespace Pingalot
 		public double PacketsLostPercentage { get; private set; }
 		public long MinimumRoundtrip { get; private set; }
 		public long MaximumRoundtrip { get; private set; }
-		public long TotalRoundtrip { get; private set; }
+		public double TotalRoundtrip { get; private set; }
 		public double AverageRoundtrip { get; private set; }
 
 		public PingSession(DateTime startTime)
