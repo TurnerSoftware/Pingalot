@@ -16,7 +16,7 @@ namespace Pingalot
 
 		public async Task<PingSession> StartAsync(PingRequestOptions options, CancellationToken cancellationToken)
 		{
-			var ExportFile = options.ExportFile;
+			var ExportFile = options.ExportFile; // https://github.com/TurnerSoftware/Pingalot/issues/6
 			var pingSender = new Ping();
 			var pingOptions = new PingOptions
 			{
