@@ -23,7 +23,8 @@ namespace Pingalot
 						DelayBetweenPings = pingArgs.BreakBetweenPings,
 						PingTimeout = pingArgs.PingTimeout,
 						TimeTolive = pingArgs.TimeToLive,
-						NumberOfPings = pingArgs.PingUntilStopped ? -1 : pingArgs.NumberOfPings
+						NumberOfPings = pingArgs.PingUntilStopped ? -1 : pingArgs.NumberOfPings,
+						ExportFile = pingArgs.ExportLocation
 					};
 
 					//TODO: Error on bad layout
