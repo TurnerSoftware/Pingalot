@@ -32,9 +32,9 @@ namespace Pingalot.Core.Tests
 				RequestTime = DateTime.Now
 			};
 
-			pingRequests.Add(pingRequest);
+			var testPingSession = new PingSession(startTime);
 
-			var testPingSession = new PingSession(startTime, endTime, duration, pingRequests);
+			testPingSession.AddSinglePingResult(duration, pingRequest);
 
 			// When we have a single failed ping request - our AverageRoundtrip should be 0
 			Assert.AreEqual(testPingSession.AverageRoundtrip, 0, "If PacketsReceived is 0, when we attempt to calculate AverageRoundTrip we may trigger a divide by zero exception.");
@@ -47,11 +47,11 @@ namespace Pingalot.Core.Tests
 			// Manually calculate the expected statistics 
 			// Assert stats are correct
 
-			var pingRequests = new List<PingRequest>();
-
 			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
 			TimeSpan duration = new System.TimeSpan(0, 0, 0, 30);
 			var endTime = startTime.Add(duration);
+
+			var testPingSession = new PingSession(startTime);
 
 			// Create 6 successful pings 10ms RT
 			for (int i = 0; i < 6; i++)
@@ -67,7 +67,7 @@ namespace Pingalot.Core.Tests
 					RequestTime = DateTime.Now
 				};
 
-				pingRequests.Add(pingRequest);
+				testPingSession.AddSinglePingResult(duration, pingRequest);
 			}
 
 			// Create 2 successful pings 5ms RT 
@@ -84,7 +84,7 @@ namespace Pingalot.Core.Tests
 					RequestTime = DateTime.Now
 				};
 
-				pingRequests.Add(pingRequest);
+				testPingSession.AddSinglePingResult(duration, pingRequest);
 			}
 
 			// Create 2 TimedOut pings
@@ -101,10 +101,8 @@ namespace Pingalot.Core.Tests
 					RequestTime = DateTime.Now
 				};
 
-				pingRequests.Add(pingRequest);
+				testPingSession.AddSinglePingResult(duration, pingRequest);
 			}
-
-			var testPingSession = new PingSession(startTime, endTime, duration, pingRequests);
 
 			// assert that stats add up properly - calc them manually and not via debug
 			Assert.AreEqual(testPingSession.PacketsReceived, 9, "PacketsReceived should be 9.");
