@@ -17,24 +17,11 @@ namespace Pingalot.Core.Tests
 			var pingRequests = new List<PingRequest>();
 
 			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
-			TimeSpan duration = new System.TimeSpan(0, 0, 0, 30);
-			var endTime = startTime.Add(duration);
-
-			// Setup a single failed ping(TimedOut)
-			var pingRequest = new PingRequest
-			{
-				Address = IPAddress.Loopback,
-				Status = IPStatus.TimedOut,
-				RoundtripTime = 0,
-				TimeToLive = 0,
-				BufferLength = 0,
-				HasMatchingBuffer = false,
-				RequestTime = DateTime.Now
-			};
+			var duration = new TimeSpan(0, 0, 0, 30);
 
 			var testPingSession = new PingSession(startTime);
 
-			testPingSession.AddSinglePingResult(duration, pingRequest);
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.TimedOut,0) );
 
 			// When we have a single failed ping request - our AverageRoundtrip should be 0
 			Assert.AreEqual(testPingSession.AverageRoundtrip, 0, "If PacketsReceived is 0, when we attempt to calculate AverageRoundTrip we may trigger a divide by zero exception.");
@@ -48,60 +35,26 @@ namespace Pingalot.Core.Tests
 			// Assert stats are correct
 
 			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
-			TimeSpan duration = new System.TimeSpan(0, 0, 0, 30);
-			var endTime = startTime.Add(duration);
+			var duration = new TimeSpan(0, 0, 0, 30);
 
 			var testPingSession = new PingSession(startTime);
 
 			// Create 6 successful pings 10ms RT
 			for (int i = 0; i < 6; i++)
 			{
-				var pingRequest = new PingRequest
-				{
-					Address = IPAddress.Loopback,
-					Status = IPStatus.Success,
-					RoundtripTime = 10,
-					TimeToLive = 58,
-					BufferLength = 32,
-					HasMatchingBuffer = true,
-					RequestTime = DateTime.Now
-				};
-
-				testPingSession.AddSinglePingResult(duration, pingRequest);
+				testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
 			}
 
 			// Create 2 successful pings 5ms RT 
 			for (int i = 0; i < 3; i++)
 			{
-				var pingRequest = new PingRequest
-				{
-					Address = IPAddress.Loopback,
-					Status = IPStatus.Success,
-					RoundtripTime = 5,
-					TimeToLive = 58,
-					BufferLength = 32,
-					HasMatchingBuffer = true,
-					RequestTime = DateTime.Now
-				};
-
-				testPingSession.AddSinglePingResult(duration, pingRequest);
+				testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
 			}
 
 			// Create 2 TimedOut pings
 			for (int i = 0; i < 2; i++)
 			{
-				var pingRequest = new PingRequest
-				{
-					Address = IPAddress.Loopback,
-					Status = IPStatus.TimedOut,
-					RoundtripTime = 0,
-					TimeToLive = 0,
-					BufferLength = 0,
-					HasMatchingBuffer = false,
-					RequestTime = DateTime.Now
-				};
-
-				testPingSession.AddSinglePingResult(duration, pingRequest);
+				testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.TimedOut, 0));
 			}
 
 			// assert that stats add up properly - calc them manually and not via debug
@@ -112,6 +65,24 @@ namespace Pingalot.Core.Tests
 			Assert.AreEqual(testPingSession.MinimumRoundtrip, 5, "MinimumRoundtrip should be 5");
 			Assert.AreEqual(testPingSession.MaximumRoundtrip, 10, "MinimumRoundtrip should be 10");
 			Assert.AreEqual(testPingSession.AverageRoundtrip, 8.33, "AverageRoundtrip should equal 75 divided by 9 = 8.33 rounded to two decimal places.");
+		}
+
+
+		private static PingRequest CreateTestPingResult(IPStatus status, long roundtripTime)
+		{
+			// create dummy PingRequest
+			var newPingRequest = new PingRequest
+			{
+				Address = IPAddress.Loopback,
+				Status = status,
+				RoundtripTime = roundtripTime,
+				TimeToLive = (status == IPStatus.Success) ? 60 : 0,
+				BufferLength = (status == IPStatus.Success) ? 32 : 0,
+				HasMatchingBuffer = (status == IPStatus.Success),
+				RequestTime = null
+			};
+
+			return newPingRequest;
 		}
 	}
 }

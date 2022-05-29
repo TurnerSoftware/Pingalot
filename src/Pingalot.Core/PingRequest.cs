@@ -12,6 +12,6 @@ namespace Pingalot
 		public int TimeToLive { get; init; }
 		public int BufferLength { get; init; }
 		public bool HasMatchingBuffer { get; init; }
-		public DateTime RequestTime { get; init; }
+		public DateTime? RequestTime { get; init; }
 	}
 }
