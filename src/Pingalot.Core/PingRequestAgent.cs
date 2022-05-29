@@ -13,8 +13,14 @@ namespace Pingalot
 	public class PingRequestAgent
 	{
 		public event PingCompletedEventHandler PingCompleted;
+		private PingRequestOptions options;
 
-		public async Task<PingSession> StartAsync(PingRequestOptions options, CancellationToken cancellationToken)
+		public PingRequestAgent(PingRequestOptions _options)
+		{
+			options = _options;
+		}
+
+		public async Task<PingSession> StartAsync(CancellationToken cancellationToken)
 		{
 			var ExportFile = options.ExportFile; 
 			var pingSender = new Ping();
@@ -46,39 +52,49 @@ namespace Pingalot
 			var timer = new Stopwatch();
 			timer.Start();
 
-			while (!cancellationToken.IsCancellationRequested && (options.NumberOfPings == -1 || pingSession.PacketsSent < options.NumberOfPings))
+
+			using (var stream = File.Open(options.ExportFile, FileMode.Append))
+			using (var writer = new StreamWriter(stream))
+			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 			{
-				var requestTime = DateTime.Now;
-				var pingReply = await pingSender.SendPingAsync(options.Address, (int)options.PingTimeout.TotalMilliseconds, buffer, pingOptions);
-				var pingRequest = new PingRequest
-				{
-					Address = pingReply.Address,
-					Status = pingReply.Status,
-					RoundtripTime = pingReply.RoundtripTime,
-					TimeToLive = pingReply.Options?.Ttl ?? 0,
-					BufferLength = pingReply.Buffer.Length,
-					HasMatchingBuffer = CheckBuffer(buffer, pingReply.Buffer),
-					RequestTime = requestTime
-				};
 
-				PingCompleted?.Invoke(this, new PingCompletedEventArgs
+				while (!cancellationToken.IsCancellationRequested && (options.NumberOfPings == -1 || pingSession.PacketsSent < options.NumberOfPings))
 				{
-					CompletedPing = pingRequest,
-					Session = pingSession
-				});
+					var requestTime = DateTime.Now;
+					var pingReply = await pingSender.SendPingAsync(options.Address, (int)options.PingTimeout.TotalMilliseconds, buffer, pingOptions);
+					var pingRequest = new PingRequest
+					{
+						Address = pingReply.Address,
+						Status = pingReply.Status,
+						RoundtripTime = pingReply.RoundtripTime,
+						TimeToLive = pingReply.Options?.Ttl ?? 0,
+						BufferLength = pingReply.Buffer.Length,
+						HasMatchingBuffer = CheckBuffer(buffer, pingReply.Buffer),
+						RequestTime = requestTime
+					};
 
-				if (ExportFile != null)
-				{
-					WriteRecordToExportFile(ExportFile, pingRequest);
+					PingCompleted?.Invoke(this, new PingCompletedEventArgs
+					{
+						CompletedPing = pingRequest,
+						Session = pingSession
+					});
+
+					var singleExportablePingResult = new PingRequestExportModel(pingRequest);
+					csv.WriteRecord(singleExportablePingResult);
+					csv.NextRecord();
+					csv.Flush();	
+					writer.Flush();
+					stream.Flush();
+
+					pingSession.AddSinglePingResult(timer.Elapsed, pingRequest);
+
+					try
+					{
+						await Task.Delay(options.DelayBetweenPings, cancellationToken);
+					}
+					catch { }
 				}
 
-				pingSession.AddSinglePingResult(timer.Elapsed, pingRequest);
-
-				try
-				{
-					await Task.Delay(options.DelayBetweenPings, cancellationToken);
-				}
-				catch { }
 			}
 
 			timer.Stop();
