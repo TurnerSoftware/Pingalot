@@ -43,7 +43,8 @@ namespace Pingalot.Core.Tests
 			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
 			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
 
-			// Create and add 2 successful pings 5ms RT 
+			// Create and add 3 successful pings 5ms RT 
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
 			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
 			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
 
