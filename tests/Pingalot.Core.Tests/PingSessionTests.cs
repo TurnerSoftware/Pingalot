@@ -17,7 +17,7 @@ namespace Pingalot.Core.Tests
 			var pingRequests = new List<PingRequest>();
 
 			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
-			TimeSpan duration = new System.TimeSpan(0, 0, 0, 30);
+			var duration = new TimeSpan(0, 0, 0, 30);
 			var endTime = startTime.Add(duration);
 
 			// Setup a single failed ping(TimedOut)
@@ -50,7 +50,7 @@ namespace Pingalot.Core.Tests
 			var pingRequests = new List<PingRequest>();
 
 			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
-			TimeSpan duration = new System.TimeSpan(0, 0, 0, 30);
+			var duration = new TimeSpan(0, 0, 0, 30);
 			var endTime = startTime.Add(duration);
 
 			// Create 6 successful pings 10ms RT
