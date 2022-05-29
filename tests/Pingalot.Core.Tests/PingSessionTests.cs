@@ -30,32 +30,26 @@ namespace Pingalot.Core.Tests
 		[TestMethod]
 		public void ConfirmPingSessionStatistics()
 		{
-			// Mock up PingRequests with specific values
-			// Manually calculate the expected statistics 
-			// Assert stats are correct
-
 			var startTime = new DateTime(2022, 5, 19, 14, 30, 0);
 			var duration = new TimeSpan(0, 0, 0, 30);
 
 			var testPingSession = new PingSession(startTime);
 
-			// Create 6 successful pings 10ms RT
-			for (int i = 0; i < 6; i++)
-			{
-				testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
-			}
+			// Create and add 6 successful pings 10ms RT
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 10));
 
-			// Create 2 successful pings 5ms RT 
-			for (int i = 0; i < 3; i++)
-			{
-				testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
-			}
+			// Create and add 2 successful pings 5ms RT 
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.Success, 5));
 
-			// Create 2 TimedOut pings
-			for (int i = 0; i < 2; i++)
-			{
-				testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.TimedOut, 0));
-			}
+			// Create and add 2 TimedOut pings
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.TimedOut, 0));
+			testPingSession.AddSinglePingResult(duration, CreateTestPingResult(IPStatus.TimedOut, 0));
 
 			// assert that stats add up properly - calc them manually and not via debug
 			Assert.AreEqual(testPingSession.PacketsReceived, 9, "PacketsReceived should be 9.");
@@ -70,7 +64,7 @@ namespace Pingalot.Core.Tests
 
 		private static PingRequest CreateTestPingResult(IPStatus status, long roundtripTime)
 		{
-			// create dummy PingRequest
+
 			var newPingRequest = new PingRequest
 			{
 				Address = IPAddress.Loopback,
