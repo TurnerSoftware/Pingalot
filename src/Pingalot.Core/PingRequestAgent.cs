@@ -1,9 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using CsvHelper;
 
 namespace Pingalot
 {
@@ -13,20 +16,37 @@ namespace Pingalot
 
 		public async Task<PingSession> StartAsync(PingRequestOptions options, CancellationToken cancellationToken)
 		{
+			var ExportFile = options.ExportFile; 
 			var pingSender = new Ping();
 			var pingOptions = new PingOptions
 			{
 				Ttl = options.TimeTolive
 			};
-			var pingRequests = new List<PingRequest>();
+
+			if (ExportFile != null)
+			{
+				try
+				{
+					SetupExportFile(ExportFile);
+				}
+				catch
+				{
+					// something went wrong with using the provided export file path\filename - so lets setup one local to exe
+					var fileNameDate = DateTime.Now.ToString("yyyy-MM-dd__HH-mm-ss");
+					ExportFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\results_" + fileNameDate + ".csv";
+					SetupExportFile(ExportFile);
+				}
+
+			}
 
 			var buffer = CreateBuffer(options.BufferSize);
-
 			var startTime = DateTime.Now;
+			var pingSession = new PingSession(startTime);
+
 			var timer = new Stopwatch();
 			timer.Start();
 
-			while (!cancellationToken.IsCancellationRequested && (options.NumberOfPings == -1 || pingRequests.Count < options.NumberOfPings))
+			while (!cancellationToken.IsCancellationRequested && (options.NumberOfPings == -1 || pingSession.PacketsSent < options.NumberOfPings))
 			{
 				var requestTime = DateTime.Now;
 				var pingReply = await pingSender.SendPingAsync(options.Address, (int)options.PingTimeout.TotalMilliseconds, buffer, pingOptions);
@@ -41,14 +61,18 @@ namespace Pingalot
 					RequestTime = requestTime
 				};
 
-				pingRequests.Add(pingRequest);
-
-				var partialSession = new PingSession(startTime, timer.Elapsed, pingRequests);
 				PingCompleted?.Invoke(this, new PingCompletedEventArgs
 				{
 					CompletedPing = pingRequest,
-					Session = partialSession
+					Session = pingSession
 				});
+
+				if (ExportFile != null)
+				{
+					WriteRecordToExportFile(ExportFile, pingRequest);
+				}
+
+				pingSession.AddSinglePingResult(timer.Elapsed, pingRequest);
 
 				try
 				{
@@ -60,7 +84,8 @@ namespace Pingalot
 			timer.Stop();
 			var endTime = DateTime.Now;
 
-			return new PingSession(startTime, endTime, timer.Elapsed, pingRequests);
+			pingSession.CalculateFinalPingStats(endTime, timer.Elapsed);
+			return pingSession;
 		}
 
 		private static byte[] CreateBuffer(int size)
@@ -94,6 +119,32 @@ namespace Pingalot
 			}
 
 			return true;
+		}
+
+		private void SetupExportFile(string exportFile)
+		{
+			// open file and write out the csv file headers - just once
+			// we use append as file may already exist - thats ok still write to it
+			using (var stream = File.Open(exportFile, FileMode.Append))
+			using (var writer = new StreamWriter(stream))
+			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+			{
+				csv.WriteHeader<PingRequestExportModel>();
+				csv.NextRecord();
+			}
+		}
+
+		private void WriteRecordToExportFile(string exportFile, PingRequest pingRequest)
+		{
+			// write a single pingrequest record to export file
+			using (var stream = File.Open(exportFile, FileMode.Append))
+			using (var writer = new StreamWriter(stream))
+			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+			{
+				var singleExportablePingResult = new PingRequestExportModel(pingRequest);
+				csv.WriteRecord(singleExportablePingResult);
+				csv.NextRecord();
+			}
 		}
 	}
 }

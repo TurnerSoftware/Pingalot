@@ -26,7 +26,7 @@ namespace Pingalot
 			TimeToLive = pingRequest.TimeToLive;
 			BufferLength = pingRequest.BufferLength;
 			HasMatchingBuffer = pingRequest.HasMatchingBuffer;
-			RequestTime = pingRequest.RequestTime.ToString("O");
+			RequestTime = pingRequest.RequestTime.ToString();
 		}
 	}
 }

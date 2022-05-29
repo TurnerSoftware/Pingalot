@@ -23,7 +23,8 @@ namespace Pingalot
 						DelayBetweenPings = pingArgs.BreakBetweenPings,
 						PingTimeout = pingArgs.PingTimeout,
 						TimeTolive = pingArgs.TimeToLive,
-						NumberOfPings = pingArgs.PingUntilStopped ? -1 : pingArgs.NumberOfPings
+						NumberOfPings = pingArgs.PingUntilStopped ? -1 : pingArgs.NumberOfPings,
+						ExportFile = pingArgs.ExportLocation
 					};
 
 					//TODO: Error on bad layout
@@ -37,19 +38,6 @@ namespace Pingalot
 						session = await ModernPing.StartAsync(options);
 					}
 
-					if (session != null)
-					{
-						if (!string.IsNullOrWhiteSpace(pingArgs.ExportLocation))
-						{
-							Console.WriteLine("Exporting results to {0}...", pingArgs.ExportLocation);
-							using (var file = File.Open(pingArgs.ExportLocation, FileMode.Create))
-							using (var writer = new StreamWriter(file))
-							using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-							{
-								await csv.WriteRecordsAsync(session.Requests.Select(r => new PingRequestExportModel(r)));
-							}
-						}
-					}
 				});
 		}
 	}
