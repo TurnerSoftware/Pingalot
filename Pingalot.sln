@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{405D55
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F7E1DAB2-474F-47CE-83F0-82062D2CE69E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pingalot.Core.Tests", "tests\Pingalot.Core.Tests\Pingalot.Core.Tests.csproj", "{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pingalot.Core.Tests", "tests\Pingalot.Core.Tests\Pingalot.Core.Tests.csproj", "{7F0E181A-6B70-4A96-96D1-70F19FB5FC9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

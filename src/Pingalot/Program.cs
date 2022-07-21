@@ -1,10 +1,5 @@
 ﻿using CommandLine;
-using CsvHelper;
 using Pingalot.Layouts;
-using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pingalot
@@ -13,6 +8,7 @@ namespace Pingalot
 	{
 		static async Task Main(string[] args)
 		{
+
 			await Parser.Default.ParseArguments<PingArguments>(args)
 				.WithParsedAsync(async pingArgs =>
 				{
@@ -24,8 +20,10 @@ namespace Pingalot
 						PingTimeout = pingArgs.PingTimeout,
 						TimeTolive = pingArgs.TimeToLive,
 						NumberOfPings = pingArgs.PingUntilStopped ? -1 : pingArgs.NumberOfPings,
-						ExportFile = pingArgs.ExportLocation
+						ExportFileFullPath = PingRequestOptions.SetExportFile(pingArgs.ExportFileFullPath, pingArgs.UseExportFileDefault)
 					};
+
+
 
 					//TODO: Error on bad layout
 					PingSession session = null;

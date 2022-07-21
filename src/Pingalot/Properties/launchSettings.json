@@ -3,6 +3,22 @@
     "PingStats": {
       "commandName": "Project",
       "commandLineArgs": "-t --layout 2 --export C:\\temp\\test.csv 1.1.1.1"
+    },
+    "export omitted": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 2 1.1.1.1"
+    },
+    "-t and -n": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 2 -n 10 1.1.1.1"
+    },
+    "-e": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 2 1.1.1.1 -e"
+    },
+    "--export AND -e": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 2 -e --export C:\\temp\\test2.csv 1.1.1.1"
     }
   }
 }

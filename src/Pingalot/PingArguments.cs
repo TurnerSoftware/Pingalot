@@ -3,6 +3,8 @@ using CommandLine.Text;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Reflection;
 
 namespace Pingalot
 {
@@ -48,8 +50,11 @@ namespace Pingalot
 		[Option("layout", HelpText = "The display layout.\n1. Traditional\n2. Modern", Default = 2)]
 		public int Layout { get; set; }
 
-		[Option("export", HelpText = "The file to export the results to. Data is saved as a CSV.")]
-		public string ExportLocation { get; set; }
+		[Option("export", HelpText = "The full file path to export the results to. Data is saved as a CSV. Existing file is appended to. Overrides -e.", Default = null)]
+		public string? ExportFileFullPath { get; set; }
+
+		[Option('e', HelpText = "Export to CSV alongside this executable with default filename that includes current date & time.", Default = false)]
+		public bool UseExportFileDefault { get; set; }
 
 		public TimeSpan PingTimeout => new TimeSpan(0, 0, 0, 0, PingTimeoutInMilliseconds);
 		public TimeSpan BreakBetweenPings => new TimeSpan(0, 0, 0, 0, BreakBetweenPingsInMilliseconds);
