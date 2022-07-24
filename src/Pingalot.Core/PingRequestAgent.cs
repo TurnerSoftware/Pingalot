@@ -16,7 +16,7 @@ namespace Pingalot
 
 		public async Task<PingSession> StartAsync(PingRequestOptions options, CancellationToken cancellationToken)
 		{
-			var ExportFile = options.ExportFile; 
+			var ExportFile = options.ExportFileFullPath; 
 			var pingSender = new Ping();
 			var pingOptions = new PingOptions
 			{
@@ -26,21 +26,21 @@ namespace Pingalot
 			var pingRequestFileExporter = new PingRequestFileExporter();
 			PingCompleted += pingRequestFileExporter.onPingCompleted;
 
-			if (ExportFile != null)
-			{
-				try
-				{
-					SetupExportFile(ExportFile);
-				}
-				catch
-				{
-					// something went wrong with using the provided export file path\filename - so lets setup one local to exe
-					var fileNameDate = DateTime.Now.ToString("yyyy-MM-dd__HH-mm-ss");
-					ExportFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\results_" + fileNameDate + ".csv";
-					SetupExportFile(ExportFile);
-				}
+			//if (ExportFile != null)
+			//{
+			//	try
+			//	{
+			//		SetupExportFile(ExportFile);
+			//	}
+			//	catch
+			//	{
+			//		// something went wrong with using the provided export file path\filename - so lets setup one local to exe
+			//		var fileNameDate = DateTime.Now.ToString("yyyy-MM-dd__HH-mm-ss");
+			//		ExportFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\results_" + fileNameDate + ".csv";
+			//		SetupExportFile(ExportFile);
+			//	}
 
-			}
+			//}
 
 			var buffer = CreateBuffer(options.BufferSize);
 			var startTime = DateTime.Now;
