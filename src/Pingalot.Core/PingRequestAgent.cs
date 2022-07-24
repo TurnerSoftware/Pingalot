@@ -23,6 +23,9 @@ namespace Pingalot
 				Ttl = options.TimeTolive
 			};
 
+			var pingRequestFileExporter = new PingRequestFileExporter();
+			PingCompleted += pingRequestFileExporter.onPingCompleted;
+
 			if (ExportFile != null)
 			{
 				try
@@ -60,6 +63,7 @@ namespace Pingalot
 					HasMatchingBuffer = CheckBuffer(buffer, pingReply.Buffer),
 					RequestTime = requestTime
 				};
+
 
 				PingCompleted?.Invoke(this, new PingCompletedEventArgs
 				{
