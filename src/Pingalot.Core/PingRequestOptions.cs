@@ -16,6 +16,7 @@ namespace Pingalot
 		public int TimeTolive { get; init; }
 		public TimeSpan DelayBetweenPings { get; init; }
 		public int NumberOfPings { get; init; }
+
 		public string? ExportFileFullPath { get; set; }
 
 		public static string? SetExportFile(string ExportFileFullPath, bool UseExportFileDefault)

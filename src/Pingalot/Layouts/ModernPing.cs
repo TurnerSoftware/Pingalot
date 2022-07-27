@@ -13,6 +13,15 @@ namespace Pingalot.Layouts
 			var pingRequestAgent = new PingRequestAgent();
 			var cancellationTokenSource = new CancellationTokenSource();
 
+			if (options.ExportFileFullPath != null)
+			{
+				//using (var pingRequestFileExporter = new PingRequestFileExporter(options.ExportFileFullPath, pingRequestAgent))
+				//{
+				var pingRequestFileExporter = new PingRequestFileExporter(options.ExportFileFullPath);
+				pingRequestAgent.PingCompleted += pingRequestFileExporter.onPingCompletedExportResultToFile;
+				//}
+			}
+
 			Console.CancelKeyPress += (sender, e) =>
 			{
 				e.Cancel = true;
