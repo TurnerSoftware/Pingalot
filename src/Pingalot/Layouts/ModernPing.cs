@@ -49,7 +49,7 @@ namespace Pingalot.Layouts
 							requestsRemaining.Increment(1);
 						};
 
-						results = await pingRequestAgent.StartAsync(cancellationTokenSource.Token);
+						results = await pingRequestAgent.StartAsync(options, cancellationTokenSource.Token);
 					});
 			}
 			else
@@ -78,7 +78,7 @@ namespace Pingalot.Layouts
 							ctx.Status($"Continuously pinging [yellow]{options.Address}[/] [grey54]({e.Session.PacketsSent} sent, [{packetsLostColour}]{e.Session.PacketsLostPercentage:0.00}% lost[/], {e.Session.AverageRoundtrip}ms average, {(int)e.Session.Elapsed.TotalMinutes}:{e.Session.Elapsed.Seconds:00} elapsed)[/]");
 						};
 
-						results = await pingRequestAgent.StartAsync(cancellationTokenSource.Token);
+						results = await pingRequestAgent.StartAsync(options, cancellationTokenSource.Token);
 					});
 			}
 			
