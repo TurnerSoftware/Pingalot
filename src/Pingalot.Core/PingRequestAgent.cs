@@ -111,30 +111,5 @@ namespace Pingalot
 			return true;
 		}
 
-		private void SetupExportFile(string exportFile)
-		{
-			// open file and write out the csv file headers - just once
-			// we use append as file may already exist - thats ok still write to it
-			using (var stream = File.Open(exportFile, FileMode.Append))
-			using (var writer = new StreamWriter(stream))
-			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-			{
-				csv.WriteHeader<PingRequestExportModel>();
-				csv.NextRecord();
-			}
-		}
-
-		private void WriteRecordToExportFile(string exportFile, PingRequest pingRequest)
-		{
-			// write a single pingrequest record to export file
-			using (var stream = File.Open(exportFile, FileMode.Append))
-			using (var writer = new StreamWriter(stream))
-			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-			{
-				var singleExportablePingResult = new PingRequestExportModel(pingRequest);
-				csv.WriteRecord(singleExportablePingResult);
-				csv.NextRecord();
-			}
-		}
 	}
 }

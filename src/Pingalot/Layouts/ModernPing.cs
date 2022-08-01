@@ -10,7 +10,7 @@ namespace Pingalot.Layouts
 	{
 		public static async Task<PingSession> StartAsync(PingRequestOptions options)
 		{
-			var pingRequestAgent = new PingRequestAgent(options);
+			var pingRequestAgent = new PingRequestAgent();
 			var cancellationTokenSource = new CancellationTokenSource();
 
 			if (options.ExportFileFullPath != null)
