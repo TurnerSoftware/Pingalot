@@ -17,7 +17,7 @@ namespace Pingalot.Layouts
 				cancellationTokenSource.Cancel();
 			};
 
-			var pingRequestAgent = new PingRequestAgent(options);
+			var pingRequestAgent = new PingRequestAgent();
 			pingRequestAgent.PingCompleted += (sender, e) =>
 			{
 				var result = e.CompletedPing;
@@ -35,7 +35,7 @@ namespace Pingalot.Layouts
 			Console.WriteLine();
 			Console.WriteLine("Pinging {0} with {1} bytes of data:", options.Address, options.BufferSize);
 
-			var results = await pingRequestAgent.StartAsync(cancellationTokenSource.Token);
+			var results = await pingRequestAgent.StartAsync(options, cancellationTokenSource.Token);
 
 			if (results.PacketsSent > 0)
 			{
