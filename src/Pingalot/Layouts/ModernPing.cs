@@ -15,11 +15,9 @@ namespace Pingalot.Layouts
 
 			if (options.ExportFileFullPath != null)
 			{
-				//using (var pingRequestFileExporter = new PingRequestFileExporter(options.ExportFileFullPath, pingRequestAgent))
-				//{
 				var pingRequestFileExporter = new PingRequestFileExporter(options.ExportFileFullPath);
-				pingRequestAgent.PingCompleted += pingRequestFileExporter.onPingCompletedExportResultToFile;
-				//}
+				pingRequestAgent.PingCompleted += pingRequestFileExporter.ExportSingleResultToFile;
+
 			}
 
 			Console.CancelKeyPress += (sender, e) =>

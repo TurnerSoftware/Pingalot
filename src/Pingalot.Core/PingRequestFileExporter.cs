@@ -9,7 +9,7 @@ using CsvHelper;
 
 namespace Pingalot
 {
-	public class PingRequestFileExporter 
+	public class PingRequestFileExporter : IDisposable
 	{
 		private FileStream stream;
 		private StreamWriter writer;
@@ -26,7 +26,7 @@ namespace Pingalot
 
 		}
 
-		public void onPingCompletedExportResultToFile(object sender, PingCompletedEventArgs pingCompletedEventArgs)
+		public void ExportSingleResultToFile(object sender, PingCompletedEventArgs pingCompletedEventArgs)
 		{
 			// write a single pingrequest record to export file
 			var singleExportablePingResult = new PingRequestExportModel(pingCompletedEventArgs.CompletedPing);
@@ -35,16 +35,16 @@ namespace Pingalot
 			csv.NextRecord();
 		}
 
-		//public void Dispose()
-		//{
-		//	csv.Dispose();
-		//	writer.Dispose();
-		//	stream.Dispose();
-		//}
+		public void Dispose()
+		{
+			csv.Dispose();
+			writer.Dispose();
+			stream.Dispose();
+		}
 
-		//~PingRequestFileExporter()
-		//{
-		//	this.Dispose();
-		//}
+		~PingRequestFileExporter()
+		{
+			this.Dispose();
+		}
 	}
 }
