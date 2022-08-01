@@ -22,12 +22,6 @@ namespace Pingalot
 				Ttl = options.TimeTolive
 			};
 
-			//if (options.ExportFileFullPath != null)
-			//{
-			//	var pingRequestFileExporter = new PingRequestFileExporter(options.ExportFileFullPath);
-			//	PingCompleted += pingRequestFileExporter.onPingCompletedExportResultToFile;
-			//}
-
 			var buffer = CreateBuffer(options.BufferSize);
 			var startTime = DateTime.Now;
 			var pingSession = new PingSession(startTime);
@@ -56,11 +50,6 @@ namespace Pingalot
 					CompletedPing = pingRequest,
 					Session = pingSession
 				});
-
-				//if (ExportFile != null)
-				//{
-				//	WriteRecordToExportFile(ExportFile, pingRequest);
-				//}
 
 				pingSession.AddSinglePingResult(timer.Elapsed, pingRequest);
 

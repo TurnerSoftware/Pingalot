@@ -18,6 +18,7 @@ namespace Pingalot.Layouts
 			};
 
 			var pingRequestAgent = new PingRequestAgent();
+
 			pingRequestAgent.PingCompleted += (sender, e) =>
 			{
 				var result = e.CompletedPing;
