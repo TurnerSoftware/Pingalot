@@ -19,6 +19,13 @@ namespace Pingalot.Layouts
 
 			var pingRequestAgent = new PingRequestAgent();
 
+			if (options.ExportFileFullPath != null)
+			{
+				var pingRequestFileExporter = new PingRequestFileExporter(options.ExportFileFullPath);
+				pingRequestAgent.PingCompleted += pingRequestFileExporter.ExportSingleResultToFile;
+
+			}
+
 			pingRequestAgent.PingCompleted += (sender, e) =>
 			{
 				var result = e.CompletedPing;

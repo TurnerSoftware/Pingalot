@@ -11,6 +11,18 @@
     "no export": {
       "commandName": "Project",
       "commandLineArgs": "-t --layout 2 1.1.1.1"
+    },
+    "trad -e": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 1 -e 1.1.1.1"
+    },
+    "trad --export": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 1 --export C:\\temp\\trad.csv 1.1.1.1"
+    },
+    "trad no export": {
+      "commandName": "Project",
+      "commandLineArgs": "-t --layout 1 1.1.1.1"
     }
   }
 }
